@@ -1,6 +1,8 @@
 # The Worst (But Only) Claude 3 Tokenizer
 
-_Not an official implementation_
+_Not an official implementation_. By _Javier Rando and Florian Tramèr_
+
+See our [Twitter thread](https://twitter.com/javirandor/status/1767602845111492685).
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but has not publicly released the tokenizer used for this family of models. But no worries! You can reverse-engineer the tokenizer by analyzing the generation streaming.
 
