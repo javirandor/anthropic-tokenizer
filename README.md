@@ -49,3 +49,24 @@ python src/consolidate_vocab.py
 ```
 
 You can create pull requests (or share via email) your `anthropic_vocab.jsonl` file and will try to keep a consolidated large vocabulary that others can use in this repository.
+
+## Motivating Example
+
+I ran several tests to verify whether the traffic is a good proxy for tokenization. It could be possible that the API served text per words or a different unit (e.g. characters).
+
+I took a long string that is unlikely to be a single token: `asdfasdfasdf`
+
+1. I check the tokenization of the OpenAI tokenizer
+![OpenAI tokenization for asdfasdfasdf](imgs/openai.png)
+
+2. I ask Claude 3 to copy the string **but limiting the maximum number of tokens to 1**
+![Claude 3 first token for asdfasdfasdf](imgs/1token.png)
+
+3. I repeat the same but **limiting the maximum number of tokens to 2**
+![Claude 3 first token for asdfasdfasdf](imgs/2tokens.png)
+
+4. If you inspect the network traffic (or the streaming in Python) you will find that `text_delta` is likely to represent a token.
+![Network traffic for asdfasdfasdf](imgs/traffic.png)
+
+
+## Surprising findings
