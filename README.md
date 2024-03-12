@@ -72,3 +72,5 @@ I took a long string that is unlikely to be a single token: `asdfasdfasdf`
 ## Surprising findings
 * The tokenizer seems to include tokens including a trailing breakline, e.g. `\n1`. These are pretty common in text (e.g. enumeration) but are not contained in OAI tokenizer.
 * Some common symbol patterns, e.g. `:)` are tokenized into two separate tokens, e.g. `:)` -> `:` and `)`.
+
+Share yours! 🤓
