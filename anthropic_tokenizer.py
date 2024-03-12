@@ -8,7 +8,7 @@ import json
 async def get_tokens(to_tokenize: str) -> None:
     tokens = []
     async with client.messages.stream(
-        max_tokens=1024,
+        max_tokens=3000,
         messages=[
             {
                 "role": "user",
