@@ -6,7 +6,7 @@ Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-f
 
 > 💡 The idea is simple. Ask Claude to repeat some text and just use the generation tokens to find out how your input will be tokenized (under the reasonable assumption of input tokenization being equal to output tokenization).
 
-This is probably the **worst Anthropic tokenizer** (and of course it is not and official implementation). But it can do the trick for experiments where tokenization plays an important role and spending some tokens is not a problem.
+This is probably the **worst Anthropic tokenizer** (and of course it is not and official implementation). But it can do the trick for experiments where tokenization plays an important role and spending some tokens is not a problem. It is unclear how faithful this tokenization will be but our experiments suggest this is very likely a close approximation.
 
 ### How to use
 
