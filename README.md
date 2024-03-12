@@ -1,4 +1,4 @@
-# The (Worst) Anthropic Tokenizer
+# The (Worst) Claude 3 Tokenizer
 
 _Not an official implementation_
 
