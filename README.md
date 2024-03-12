@@ -1,12 +1,12 @@
-# The (Worst) Anthropic Tokenizer
+# The (Worst) Claude 3 Tokenizer
 
-_Not an official implementation, but can you do better?_
+_Not an official implementation_
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but decided not to publicly release the tokenizer used for these model. But no worries, you can reverse-engineer the tokenizer by analyzing the generation streaming.
 
 > 💡 The idea is simple. Ask Claude to repeat some text and just use the generation tokens to find out how your input will be tokenized (under the reasonable assumption of input tokenization being equal to output tokenization).
 
-This is probably the **worst Anthropic tokenizer** (and of course it is not and official implementation). But it can do the trick for experiments where tokenization plays an important role and spending some tokens is not a problem.
+This is probably the **worst Anthropic tokenizer** (and of course it is not and official implementation). But it can do the trick for experiments where tokenization plays an important role and spending some tokens is not a problem. It is unclear how faithful this tokenization will be but our experiments suggest this is very likely a close approximation.
 
 ### How to use
 
