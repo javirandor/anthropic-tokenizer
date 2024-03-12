@@ -85,7 +85,7 @@ if __name__ == "__main__":
                 to_tokenize.append(json.loads(line))
 
         for entry in to_tokenize:
-            tokens, total_tokens_usage = tokenize_text(entry["text"])
+            tokens, total_tokens_usage = tokenize_text(client, entry["text"])
             entry["tokens"] = tokens
             entry["number_of_tokens"] = len(tokens)
             entry["api_total_tokens_usage"] = total_tokens_usage
