@@ -9,7 +9,7 @@ async def get_tokens(client, to_tokenize: str) -> None:
     tokens = []
     async with client.messages.stream(
         max_tokens=3000,
-        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else.\n\nSome examples \n1. <tocopy> test</tocopy> -> \" test\"\n2. <tocopy>\ntest</tocopy> -> \"\ntest\"\n",
+        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else.\n\nSome examples \n1. <tocopy> test</tocopy> -> \" test\"\n2. <tocopy>\ntest</tocopy> -> \"\ntest\".\n Do not include the quotes in your responses.",
         messages=[
             {
                 "role": "user",
@@ -62,15 +62,14 @@ if __name__ == "__main__":
     if args.text:  # Quick execution and print on screen
         tokens, total_tokens_usage = tokenize_text(client, args.text)
         if "".join(tokens) != args.text:
+            print("Tokens:", tokens)
+            print("Number of text tokens:", len(tokens))
+            print("Total tokens usage (as of API):", total_tokens_usage)
             raise Exception(
                 """The tokenization resulted in a different string than the original. See below:\n\n========= Original =========\n{}\n\n\n========= Tokenized =========\n{}""".format(
                     args.text, "".join(tokens)
                 )
             )
-
-        print("Tokens:", tokens)
-        print("Number of text tokens:", len(tokens))
-        print("Total tokens usage (as of API):", total_tokens_usage)
 
         with open("anthropic_vocab.jsonl", "a") as f:
             for t in tokens:
