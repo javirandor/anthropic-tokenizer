@@ -64,6 +64,10 @@ if __name__ == "__main__":
         print("Tokens:", tokens)
         print("Number of text tokens:", len(tokens))
         print("Total tokens usage (as of API):", total_tokens_usage)
+
+        with open("anthropic_vocab.jsonl", "a") as f:
+            for t in tokens:
+                f.write(json.dumps({"token": t}) + "\n")
         
         if "".join(tokens) != args.text:
             raise Exception(
@@ -71,10 +75,6 @@ if __name__ == "__main__":
                     args.text, "".join(tokens)
                 )
             )
-
-        with open("anthropic_vocab.jsonl", "a") as f:
-            for t in tokens:
-                f.write(json.dumps({"token": t}) + "\n")
 
     if args.file:  # Read from file and write to file
         to_tokenize = []
