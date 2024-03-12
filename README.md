@@ -82,5 +82,5 @@ We started with a long string that is unlikely to be a single token: `asdfasdfas
 3. We repeat the same but **limiting the maximum number of tokens to 2**. This outputs "asdf".
 ![Claude 3 first token for asdfasdfasdf](imgs/2tokens.png)
 
-4. If you inspect the network traffic (or the streaming in Python) you will find that `text_delta` is likely to represent a token.
+4. If you inspect the network traffic (or the streaming in Python) you will find that `text_delta` matches tokens.
 ![Network traffic for asdfasdfasdf](imgs/traffic.png)
