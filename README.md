@@ -52,9 +52,9 @@ You can create pull requests (or share via email) your `anthropic_vocab.jsonl` f
 
 ## Known limitations
 * Current prompt fails for **trailing spaces and breaklines**.
-  * Solution: append some prefix text.
+  * 🩹 Solution: append some prefix text.
 * The generation stream **merges breaklines and tokens into a single event**. For instance, `\n1` will be received in a single stream event, but is very likely tokenized as 2 tokens (according to some experiments limiting the max sampling tokens).
-  * Solution: Remove breaklines from your text and assume they will be an independent token.  
+  * 🩹 Solution: Remove breaklines from your text and assume they will be an independent token.  
 
 ## Motivating Example
 
