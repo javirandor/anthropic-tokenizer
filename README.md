@@ -1,6 +1,6 @@
 # The (Worst) Anthropic Tokenizer
 
-_Not an official implementation, but can you do better?_
+_Not an official implementation_
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but decided not to publicly release the tokenizer used for these model. But no worries, you can reverse-engineer the tokenizer by analyzing the generation streaming.
 
