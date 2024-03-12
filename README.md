@@ -51,7 +51,8 @@ python src/consolidate_vocab.py
 You can create pull requests (or share via email) your `anthropic_vocab.jsonl` file and will try to keep a consolidated large vocabulary that others can use in this repository.
 
 ## Known limitations
-* The generation stream seems to merge breaklines and tokens into a single event. For instance, `\n1` will be received in a single stream event, but is very likely tokenized as 2 tokens (according to some experiments limiting the max sampling tokens).
+* Current prompt fails for **trailing spaces and breaklines**. For trailing spaces, you can add some prefix text.
+* The generation stream **merges breaklines and tokens into a single event**. For instance, `\n1` will be received in a single stream event, but is very likely tokenized as 2 tokens (according to some experiments limiting the max sampling tokens).
 
 ## Motivating Example
 
