@@ -5,14 +5,15 @@ import asyncio
 import json
 
 
-async def get_tokens(to_tokenize: str) -> None:
+async def get_tokens(client, to_tokenize: str) -> None:
     tokens = []
     async with client.messages.stream(
         max_tokens=3000,
+        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else.\n\nSome examples \n1. <tocopy> test</tocopy> -> \" test\"\n2. <tocopy>\ntest</tocopy> -> \"\ntest\"\n",
         messages=[
             {
                 "role": "user",
-                "content": f"Repeat the following text and nothing else\n\n{to_tokenize}",
+                "content": f"<tocopy>{to_tokenize}</tocopy>",
             }
         ],
         model="claude-3-opus-20240229",
@@ -26,8 +27,8 @@ async def get_tokens(to_tokenize: str) -> None:
     return tokens, total_tokens_usage
 
 
-def tokenize_text(to_tokenize: str) -> None:
-    tokens, total_tokens_usage = asyncio.run(get_tokens(to_tokenize))
+def tokenize_text(client, to_tokenize: str) -> None:
+    tokens, total_tokens_usage = asyncio.run(get_tokens(client, to_tokenize))
     return tokens, total_tokens_usage
 
 
@@ -59,7 +60,7 @@ if __name__ == "__main__":
     client = AsyncAnthropic()
 
     if args.text:  # Quick execution and print on screen
-        tokens, total_tokens_usage = tokenize_text(args.text)
+        tokens, total_tokens_usage = tokenize_text(client, args.text)
         if "".join(tokens) != args.text:
             raise Exception(
                 """The tokenization resulted in a different string than the original. See below:\n\n========= Original =========\n{}\n\n\n========= Tokenized =========\n{}""".format(
