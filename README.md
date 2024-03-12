@@ -1,12 +1,12 @@
-# The (Worst) Claude 3 Tokenizer
+# The Worst (But Only) Claude 3 Tokenizer
 
 _Not an official implementation_
 
-Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but decided not to publicly release the tokenizer used for these model. But no worries, you can reverse-engineer the tokenizer by analyzing the generation streaming.
+Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but has not publicly released the tokenizer used for this family of models. But no worries! You can reverse-engineer the tokenizer by analyzing the generation streaming.
 
-> 💡 The idea is simple. Ask Claude to repeat some text and just use the generation tokens to find out how your input will be tokenized (under the reasonable assumption of input tokenization being equal to output tokenization).
+> 💡 The idea is simple. Ask Claude to repeat some text and just use the generation tokens to find out how your input is tokenized (under the reasonable assumption that the input tokenization is equal to the output tokenization).
 
-This is probably the **worst Anthropic tokenizer** (and of course it is not and official implementation). But it can do the trick for experiments where tokenization plays an important role and spending some tokens is not a problem. It is unclear how faithful this tokenization will be but our experiments suggest this is very likely a close approximation.
+This is probably the **least efficient implementation of a tokenizer** (but it is also the only publicly available one that we know of!). This may be useful for experiments where tokenization plays an important role and spending some tokens is not a problem. It is unclear how faithful this tokenization will be but our experiments suggest this is very likely a close approximation.
 
 ### How to use
 
@@ -58,17 +58,17 @@ You can create pull requests (or share via email) your `anthropic_vocab.jsonl` f
 
 ## Motivating Example
 
-I ran several tests to verify whether the traffic is a good proxy for tokenization. It could be possible that the API served text per words or a different unit (e.g. characters).
+We ran several tests to verify whether the API traffic leaks tokenization. It could be possible that the API served text per words or a different unit (e.g. characters).
 
-I took a long string that is unlikely to be a single token: `asdfasdfasdf`
+We started with a long string that is unlikely to be a single token: `asdfasdfasdf`
 
-1. I check the tokenization of the OpenAI tokenizer
+1. We then check the tokenization of the OpenAI tokenizer
 ![OpenAI tokenization for asdfasdfasdf](imgs/openai.png)
 
-2. I ask Claude 3 to copy the string **but limiting the maximum number of tokens to 1**
+2. We ask Claude 3 to copy the string **but limiting the maximum number of output tokens to 1**. This outputs "as".
 ![Claude 3 first token for asdfasdfasdf](imgs/1token.png)
 
-3. I repeat the same but **limiting the maximum number of tokens to 2**
+3. We repeat the same but **limiting the maximum number of tokens to 2**. This outputs "asdf".
 ![Claude 3 first token for asdfasdfasdf](imgs/2tokens.png)
 
 4. If you inspect the network traffic (or the streaming in Python) you will find that `text_delta` is likely to represent a token.
