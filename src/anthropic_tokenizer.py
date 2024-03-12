@@ -9,7 +9,7 @@ async def get_tokens(client, to_tokenize: str) -> None:
     tokens = []
     async with client.messages.stream(
         max_tokens=1000,
-        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else. One example \nInput: <tocopy>Example sentence</tocopy>\nOutput: Example sentence",
+        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else. One example \nInput: <tocopy>Example sentence.</tocopy>\nOutput: Example sentence.",
         messages=[
             {
                 "role": "user",
