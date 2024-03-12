@@ -50,6 +50,9 @@ python src/consolidate_vocab.py
 
 You can create pull requests (or share via email) your `anthropic_vocab.jsonl` file and will try to keep a consolidated large vocabulary that others can use in this repository.
 
+## Known limitations
+* The generation stream seems to merge breaklines and tokens into a single event. For instance, `\n1` will be received in a single stream event, but is very likely tokenized as 2 tokens (according to some experiments limiting the max sampling tokens).
+
 ## Motivating Example
 
 I ran several tests to verify whether the traffic is a good proxy for tokenization. It could be possible that the API served text per words or a different unit (e.g. characters).
@@ -67,10 +70,3 @@ I took a long string that is unlikely to be a single token: `asdfasdfasdf`
 
 4. If you inspect the network traffic (or the streaming in Python) you will find that `text_delta` is likely to represent a token.
 ![Network traffic for asdfasdfasdf](imgs/traffic.png)
-
-
-## Surprising findings
-* The tokenizer seems to include tokens including a trailing breakline, e.g. `\n1`. These are pretty common in text (e.g. enumeration) but are not contained in OAI tokenizer.
-* Some common symbol patterns, e.g. `:)` are tokenized into two separate tokens, e.g. `:)` -> `:` and `)`.
-
-Share yours! 🤓
