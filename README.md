@@ -6,7 +6,7 @@ See our [Twitter thread](https://twitter.com/javirandor/status/17676028451114926
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but has not publicly released the tokenizer used for this family of models. But no worries! You can reverse-engineer the tokenizer by analyzing the generation streaming.
 
-> 💡 The idea is simple. Ask Claude to repeat some text and just use the generation tokens to find out how your input is tokenized (under the reasonable assumption that the input tokenization is equal to the output tokenization).
+> 💡 The idea is simple. Ask Claude to repeat some text and observe how the generation is streamed through the network. It turns out that Anthropic serves one token at a time!
 
 This is probably the **least efficient implementation of a tokenizer** (but it is also the only publicly available one that we know of!). This may be useful for experiments where tokenization plays an important role and spending some tokens is not a problem. It is unclear how faithful this tokenization will be but our experiments suggest this is very likely a close approximation.
 
