@@ -26,6 +26,15 @@ You can quickly tokenize a single string by using the `--text` argument:
 python anthropic_tokenizer.py --text "Security by obscurity is not a good idea."
 ```
 
+which outputs
+```
+Tokens: ['Security', ' by', ' obsc', 'urity', ' is', ' not', ' a', ' good', ' idea', '.']
+Number of text tokens: 10
+Total tokens usage (as of API): 13
+```
+
+The API number of tokens for successful tokenization seems to always be `number of text tokens + 3`. This may include start and end of sentence tokens.
+
 **Batched tokenization**
 
 If you want to tokenize more than one string at a time, you can use the `--file` argument. Specify a JSONL file (e.g. `to_tokenize.jsonl`) containing a `"text"` entry in each line. You can have additional keys that will be preserved after tokenization.
