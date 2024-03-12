@@ -1,6 +1,8 @@
 # The Worst (But Only) Claude 3 Tokenizer
 
-_Not an official implementation_
+_Not an official implementation_. By _Javier Rando and Florian Tramèr_
+
+See our [Twitter thread](https://twitter.com/javirandor/status/1767602845111492685).
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but has not publicly released the tokenizer used for this family of models. But no worries! You can reverse-engineer the tokenizer by analyzing the generation streaming.
 
@@ -25,6 +27,15 @@ You can quickly tokenize a single string by using the `--text` argument:
 ```bash
 python anthropic_tokenizer.py --text "Security by obscurity is not a good idea."
 ```
+
+which outputs
+```
+Tokens: ['Security', ' by', ' obsc', 'urity', ' is', ' not', ' a', ' good', ' idea', '.']
+Number of text tokens: 10
+Total tokens usage (as of API): 13
+```
+
+The API number of tokens for successful tokenization seems to always be `number of text tokens + 3`. This may include start and end of sentence tokens.
 
 **Batched tokenization**
 
