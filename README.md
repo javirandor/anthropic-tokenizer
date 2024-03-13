@@ -1,6 +1,6 @@
 # The Worst (But Only) Claude 3 Tokenizer
 
-_Not an official implementation_. By _Javier Rando and Florian Tramèr_
+_Not an official implementation_. By _Javier Rando and Florian Tramèr_. We consider this "tokenizer" does not expose any propietary information. If your usage of this tool falls within Anthropic's [Responsible Disclosure Policy](https://www.anthropic.com/responsible-disclosure-policy), we encourage you to follow their protocols.
 
 See our [Twitter thread](https://twitter.com/javirandor/status/1767602845111492685).
 
