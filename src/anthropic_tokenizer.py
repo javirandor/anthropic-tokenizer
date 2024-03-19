@@ -4,8 +4,10 @@ import argparse
 import asyncio
 import json
 
+from typing import Tuple
 
-async def get_tokens(client, to_tokenize: str, model=None) -> None:
+
+async def get_tokens(client, to_tokenize: str, model=None) -> Tuple[list[str], int]:
     """
     Model defaults to haiku
     test_tokenization.py showed they're the same, unless have unicode mixed with ascii
@@ -37,7 +39,7 @@ async def get_tokens(client, to_tokenize: str, model=None) -> None:
     return tokens, total_tokens_usage
 
 
-def tokenize_text(client, to_tokenize: str, model=None) -> None:
+def tokenize_text(client, to_tokenize: str, model=None) -> Tuple[list[str], int]:
     tokens, total_tokens_usage = asyncio.run(get_tokens(client, to_tokenize, model=model))
     return tokens, total_tokens_usage
 
@@ -45,6 +47,7 @@ def tokenize_text(client, to_tokenize: str, model=None) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--text", help="The text to tokenize", required=False, default=None)
+    parser.add_argument("--model", help="The model to be used for inference. Use a handle from Anthropic docs.", required=False, default="claude-3-haiku-20240307")
     parser.add_argument(
         "--file",
         help="A JSONL file with several texts to be tokenized",
@@ -68,7 +71,7 @@ if __name__ == "__main__":
     client = AsyncAnthropic()
 
     if args.text:  # Quick execution and print on screen
-        tokens, total_tokens_usage = tokenize_text(client, args.text)
+        tokens, total_tokens_usage = tokenize_text(client, args.text, args.model)
         print("Tokens:", tokens)
         print("Number of text tokens:", len(tokens))
         print("Total tokens usage (as of API):", total_tokens_usage)
@@ -93,7 +96,7 @@ if __name__ == "__main__":
                 to_tokenize.append(json.loads(line))
 
         for entry in to_tokenize:
-            tokens, total_tokens_usage = tokenize_text(client, entry["text"])
+            tokens, total_tokens_usage = tokenize_text(client, entry["text"], args.model)
             entry["tokens"] = tokens
             entry["number_of_tokens"] = len(tokens)
             entry["api_total_tokens_usage"] = total_tokens_usage
