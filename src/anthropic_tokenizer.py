@@ -3,6 +3,7 @@ from anthropic import AsyncAnthropic
 import argparse
 import asyncio
 import json
+from tqdm import tqdm
 
 from typing import Tuple
 
@@ -95,7 +96,7 @@ if __name__ == "__main__":
             for line in f:
                 to_tokenize.append(json.loads(line))
 
-        for entry in to_tokenize:
+        for entry in tqdm(to_tokenize):
             tokens, total_tokens_usage = tokenize_text(client, entry["text"], args.model)
             entry["tokens"] = tokens
             entry["number_of_tokens"] = len(tokens)
