@@ -5,18 +5,28 @@ import asyncio
 import json
 
 
-async def get_tokens(client, to_tokenize: str) -> None:
+async def get_tokens(client, to_tokenize: str, model=None) -> None:
+    """
+    Model defaults to haiku
+    test_tokenization.py showed they're the same, unless have unicode mixed with ascii
+    """
+    if model is None:
+        model = "claude-3-haiku-20240307"
     tokens = []
     async with client.messages.stream(
         max_tokens=1000,
-        system="Copy the text between <tocopy> markers. Include trailing spaces or breaklines. Do not write anything else. One example \nInput: <tocopy>Example sentence.</tocopy>\nOutput: Example sentence.",
+        system=(
+            "Copy the text between <tocopy> markers. Include trailing spaces or breaklines."
+            " Do not write anything else. One example \nInput: <tocopy>Example"
+            " sentence.</tocopy>\nOutput: Example sentence."
+        ),
         messages=[
             {
                 "role": "user",
                 "content": f"<tocopy>{to_tokenize}</tocopy>",
             }
         ],
-        model="claude-3-opus-20240229",
+        model=model,
     ) as stream:
         async for event in stream:
             if event.type == "content_block_delta":
@@ -27,16 +37,14 @@ async def get_tokens(client, to_tokenize: str) -> None:
     return tokens, total_tokens_usage
 
 
-def tokenize_text(client, to_tokenize: str) -> None:
-    tokens, total_tokens_usage = asyncio.run(get_tokens(client, to_tokenize))
+def tokenize_text(client, to_tokenize: str, model=None) -> None:
+    tokens, total_tokens_usage = asyncio.run(get_tokens(client, to_tokenize, model=model))
     return tokens, total_tokens_usage
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--text", help="The text to tokenize", required=False, default=None
-    )
+    parser.add_argument("--text", help="The text to tokenize", required=False, default=None)
     parser.add_argument(
         "--file",
         help="A JSONL file with several texts to be tokenized",
@@ -68,7 +76,7 @@ if __name__ == "__main__":
         with open("anthropic_vocab.jsonl", "a") as f:
             for t in tokens:
                 f.write(json.dumps({"token": t}) + "\n")
-        
+
         if "".join(tokens) != args.text:
             raise Exception(
                 """The tokenization resulted in a different string than the original. See below:\n\n========= Original =========\n{}\n\n\n========= Tokenized =========\n{}""".format(
