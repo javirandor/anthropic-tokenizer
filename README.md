@@ -51,6 +51,10 @@ This will output a file with name `{FILE_NAME}_tokenized.jsonl.` with 4 addition
 * `api_total_tokens_usage`: number of tokens as reported by the API. This seems to be always `number_of_tokens + 3`. This may include start and end of sentence tokens.
 * `tokenization_correct`: boolean indicating if the tokenized text is equal to the provided text. Use this to verify if tokenization can be trusted for a specific string.
 
+**Choose your model**
+
+By default, from March 19th, the Haiku model will be used because of speed and price. You can use the optional argument `--model [model_handle]` to specify a different model.
+
 **Keeping track (and share!) your vocabulary**
 
 By default, the above scripts will create (and append lines to) a file called `anthropic_vocab.jsonl`. This file will contain all the tokens you found so far. Since tokens can be repeated across inputs, you can consolidate the file to preserve only unique tokens by running:
