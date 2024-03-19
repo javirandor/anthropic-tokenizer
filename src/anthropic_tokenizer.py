@@ -97,11 +97,15 @@ if __name__ == "__main__":
                 to_tokenize.append(json.loads(line))
 
         for entry in tqdm(to_tokenize):
-            tokens, total_tokens_usage = tokenize_text(client, entry["text"], args.model)
-            entry["tokens"] = tokens
-            entry["number_of_tokens"] = len(tokens)
-            entry["api_total_tokens_usage"] = total_tokens_usage
-            entry["tokenization_correct"] = "".join(tokens) == entry["text"]
+            try:
+                tokens, total_tokens_usage = tokenize_text(client, entry["text"], args.model)
+                entry["tokens"] = tokens
+                entry["number_of_tokens"] = len(tokens)
+                entry["api_total_tokens_usage"] = total_tokens_usage
+                entry["tokenization_correct"] = "".join(tokens) == entry["text"]
+            except Exception as e:
+                print(f"Error tokenizing text: {entry['text']}")
+                print(e)
 
         with open(args.file.replace(".jsonl", "_tokenized.jsonl"), "w") as f:
             for entry in to_tokenize:
