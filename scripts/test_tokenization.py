@@ -5,8 +5,11 @@ from itertools import zip_longest
 import string
 
 from anthropic import Anthropic, AsyncAnthropic
+import nest_asyncio
 
 from src.anthropic_tokenizer import tokenize_text
+
+nest_asyncio.apply()
 
 an_client_async = AsyncAnthropic()
 an_client_sync = Anthropic()
@@ -43,6 +46,7 @@ s7 = " ".join(
 s8 = "".join(random.choice(string.ascii_letters) for _ in range(100))
 s9 = "".join(random.choice(string.ascii_letters) for _ in range(100))
 
+# I don't think these are all valid unicode, but using the full valid unicode still gives errors
 unicode_range = [0x0000, 0xD7FF]
 
 # random if ascii letters or unicode; sometimes trips up
@@ -77,6 +81,45 @@ s14 = (  # all 3 slightly different, 'ᶑ' vs 'ᶁ', 'ế' vs 'ė' vs 'ć'; plus
 s15 = "�����������������������������"
 
 
+def get_random_unicode(length):
+
+    try:
+        get_char = unichr
+    except NameError:
+        get_char = chr
+
+    # Update this to include code point ranges to be sampled
+    include_ranges = [
+        (0x18B0, 0x18F5),
+        (0x1900, 0x194F),
+        (0x1950, 0x1974),
+        (0x1980, 0x19DF),
+        (0x19E0, 0x19FF),
+        (0x1A00, 0x1A1F),
+        (0x1A20, 0x1AAD),
+        (0x1B00, 0x1B7C),
+        (0x1B80, 0x1BB9),
+        (0x1BC0, 0x1BFF),
+        (0x1C00, 0x1C4F),
+        (0x1C50, 0x1C7F),
+        (0x1CD0, 0x1CF2),
+        (0x1D00, 0x1D7F),
+    ]
+
+    alphabet = [
+        get_char(code_point)
+        for current_range in include_ranges
+        for code_point in range(current_range[0], current_range[1] + 1)
+    ]
+    return "".join(random.choice(alphabet) for i in range(length))
+
+
+s16 = get_random_unicode(100)
+s17 = get_random_unicode(100)
+
+s18 = "".join(chr(i) for i in [7496, 7387, 7020])
+
+
 # Wasn't a consistent difference in number of bytes on the chars that are different
 def nb(char):
     byte_sequence = char.encode("utf-8")  # Encode the character to UTF-8
@@ -84,7 +127,9 @@ def nb(char):
     return number_of_bytes
 
 
-for ix, s in enumerate([s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14]):
+for ix, s in enumerate(
+    [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18]
+):
     o1 = tokenize_text(an_client_async, s, model="claude-3-opus-20240229")
     o2 = tokenize_text(an_client_async, s, model="claude-3-sonnet-20240229")
     o3 = tokenize_text(an_client_async, s, model="claude-3-haiku-20240307")
@@ -93,8 +138,10 @@ for ix, s in enumerate([s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, 
         ["opus", "sonnet", "haiku"],
         [o1[0], o2[0], o3[0]],
     ):
-        if "".join(l) != s:
-            print(f"WARN: {ix} model {m} wrong on `{s}`")
+        ms = "".join(l)
+        if ms != s:
+            print(f"WARN: {ix} model {m} wrong on `{s}`: `{ms}`")
+            print([(ix, i, j) for ix, (i, j) in enumerate(zip(s, l)) if i != j])
 
     if not all(good):
         print(ix, s)
