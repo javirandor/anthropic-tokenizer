@@ -2,7 +2,11 @@
 
 _Not an official implementation_. By _Javier Rando and Florian Tramèr_. If your usage of this tool falls within Anthropic's [Responsible Disclosure Policy](https://www.anthropic.com/responsible-disclosure-policy), we encourage you to follow their protocols.
 
+> ⚠️ Anthropic has patched the streaming, and network traffic no longer represents tokens. However, the strategy of [limiting the output tokens to 1](https://github.com/javirandor/anthropic-tokenizer?tab=readme-ov-file#motivating-example) still works ⚠️
+
 See our [blog post](https://javirando.com/blog/2024/claude-tokenizer/) and [Twitter thread](https://twitter.com/javirandor/status/1767602845111492685).
+
+---
 
 Anthropic recently released [Claude 3](https://www.anthropic.com/news/claude-3-family), but has not publicly released the tokenizer used for this family of models. But no worries! You can reverse-engineer the tokenizer by analyzing the generation streaming.
 
